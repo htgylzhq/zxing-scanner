@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ZXing</title>
     <style>
+    html, body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+
     .button {
         width: 80px;
         height: 40px;
@@ -13,11 +19,6 @@
         border: 1px solid #eee;
         align-items: center;
         justify-content: center;
-    }
-
-    #video-container {
-        position: relative;
-        z-index: 1;
     }
 
     #video {
@@ -35,7 +36,7 @@
 </head>
 <body>
 <video id="video" playsinline></video>
-<h1>v2</h1>
+<h1>v3</h1>
 <div>
     <a class="button" id="scanButton">Scan</a>
 </div>
@@ -50,11 +51,9 @@ window.addEventListener('load', function () {
         const selectedDeviceId = videoInputDevices[0].deviceId
         document.getElementById('scanButton').addEventListener('click', () => {
             videoElement.style.display = 'block'
-            videoElement.requestFullscreen()
             codeReader.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
                 if (result) {
                     document.getElementById('result').textContent = result.text
-                    document.exitFullscreen()
                     videoElement.style.display = 'none'
                     codeReader.reset()
                 }
