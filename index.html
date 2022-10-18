@@ -14,11 +14,26 @@
         align-items: center;
         justify-content: center;
     }
+
+    #video {
+        display: none;
+        box-sizing: border-box;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+    }
     </style>
 </head>
 <body>
 <div>
     <a class="button" id="scanButton">Scan</a>
+</div>
+<div>
+    <video id="video"></video>
 </div>
 <label>Result:</label>
 <pre><code id="result"></code></pre>
@@ -26,12 +41,15 @@
 <script>
 window.addEventListener('load', function () {
     const codeReader = new ZXing.BrowserMultiFormatReader()
+    const videoElement = document.getElementById('video')
     codeReader.listVideoInputDevices().then((videoInputDevices) => {
         const selectedDeviceId = videoInputDevices[0].deviceId
         document.getElementById('scanButton').addEventListener('click', () => {
+            videoElement.style.display = 'block'
             codeReader.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
                 if (result) {
                     document.getElementById('result').textContent = result.text
+                    videoElement.style.display = 'none'
                     codeReader.reset()
                 }
                 if (err && !(err instanceof ZXing.NotFoundException)) {
