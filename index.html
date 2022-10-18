@@ -4,18 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ZXing</title>
+    <style>
+    .button {
+        width: 80px;
+        height: 40px;
+        border-radius: 10px;
+        display: flex;
+        border: 1px solid #eee;
+        align-items: center;
+        justify-content: center;
+    }
+    </style>
 </head>
 <body>
 <div>
-    <a class="button" id="startButton">Start</a>
-    <a class="button" id="resetButton">Reset</a>
+    <a class="button" id="scanButton">Scan</a>
 </div>
+<label>Result:</label>
+<pre><code id="result"></code></pre>
 <script type="text/javascript" src="https://unpkg.com/@zxing/library@latest/umd/index.min.js"></script>
 <script>
 window.addEventListener('load', function () {
     const codeReader = new ZXing.BrowserMultiFormatReader()
     codeReader.listVideoInputDevices().then((videoInputDevices) => {
-        alert(JSON.stringify(videoInputDevices))
+        const selectedDeviceId = videoInputDevices[0].deviceId
+        document.getElementById('scanButton').addEventListener('click', () => {
+            codeReader.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
+                if (result) {
+                    document.getElementById('result').textContent = result.text
+                    codeReader.reset()
+                }
+                if (err && !(err instanceof ZXing.NotFoundException)) {
+                    console.error(err)
+                    document.getElementById('result').textContent = err
+                }
+            })
+        })
     })
 })
 </script>
