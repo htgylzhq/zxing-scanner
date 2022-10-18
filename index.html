@@ -35,7 +35,7 @@
 </head>
 <body>
 <video id="video" playsinline></video>
-<h1>v1</h1>
+<h1>v2</h1>
 <div>
     <a class="button" id="scanButton">Scan</a>
 </div>
@@ -50,9 +50,11 @@ window.addEventListener('load', function () {
         const selectedDeviceId = videoInputDevices[0].deviceId
         document.getElementById('scanButton').addEventListener('click', () => {
             videoElement.style.display = 'block'
+            videoElement.requestFullscreen()
             codeReader.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
                 if (result) {
                     document.getElementById('result').textContent = result.text
+                    document.exitFullscreen()
                     videoElement.style.display = 'none'
                     codeReader.reset()
                 }
