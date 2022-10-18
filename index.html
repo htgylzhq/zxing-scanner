@@ -33,11 +33,19 @@
         height: 100vh;
         background-color: black;
     }
+
+    #switch {
+        display: none;
+        position: fixed;
+        right: 40px;
+        bottom: 40px;
+    }
     </style>
 </head>
 <body>
 <video id="video" playsinline></video>
-<h1>v4</h1>
+<button id="switch">切换摄像头</button>
+<h1>v5</h1>
 <div>
     <a class="button" id="scanButton">Scan</a>
 </div>
@@ -48,14 +56,17 @@
 window.addEventListener('load', function () {
     const codeReader = new ZXing.BrowserMultiFormatReader()
     const videoElement = document.getElementById('video')
+    const switchElement = document.getElementById('switch')
     codeReader.listVideoInputDevices().then((videoInputDevices) => {
         const selectedDeviceId = videoInputDevices[0].deviceId
         document.getElementById('scanButton').addEventListener('click', () => {
             videoElement.style.display = 'block'
+            switchElement.style.display = 'block'
             codeReader.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
                 if (result) {
                     document.getElementById('result').textContent = result.text
                     videoElement.style.display = 'none'
+                    switchElement.style.display = 'none'
                     codeReader.reset()
                 }
                 if (err && !(err instanceof ZXing.NotFoundException)) {
