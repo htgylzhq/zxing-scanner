@@ -23,7 +23,7 @@
     #video {
         display: none;
         box-sizing: border-box;
-        position: fixed;
+        position: absolute;
         top: 0;
         right: 0;
         bottom: 0;
@@ -37,9 +37,7 @@
 <div>
     <a class="button" id="scanButton">Scan</a>
 </div>
-<div id="video-container">
-    <video id="video"></video>
-</div>
+<video id="video"></video>
 <label>Result:</label>
 <pre><code id="result"></code></pre>
 <script type="text/javascript" src="https://unpkg.com/@zxing/library@latest/umd/index.min.js"></script>
