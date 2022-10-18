@@ -15,6 +15,11 @@
         justify-content: center;
     }
 
+    #video-container {
+        position: relative;
+        z-index: 1;
+    }
+
     #video {
         display: none;
         box-sizing: border-box;
@@ -25,7 +30,6 @@
         left: 0;
         width: 100vw;
         height: 100vh;
-        border: 10px solid red;
     }
     </style>
 </head>
@@ -33,7 +37,7 @@
 <div>
     <a class="button" id="scanButton">Scan</a>
 </div>
-<div>
+<div id="video-container">
     <video id="video"></video>
 </div>
 <label>Result:</label>
