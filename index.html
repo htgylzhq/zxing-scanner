@@ -37,15 +37,15 @@
     #switch {
         display: none;
         position: fixed;
-        right: 40px;
-        bottom: 40px;
+        bottom: 10px;
+        right: calc(50vw - 48px);
     }
     </style>
 </head>
 <body>
 <video id="video" playsinline></video>
-<button id="switch">切换摄像头</button>
-<h1>v5</h1>
+<image id="switch" src="camera1.png"></image>
+<h1>v6</h1>
 <div>
     <a class="button" id="scanButton">Scan</a>
 </div>
@@ -58,11 +58,15 @@ window.addEventListener('load', function () {
     const videoElement = document.getElementById('video')
     const switchElement = document.getElementById('switch')
     codeReader.listVideoInputDevices().then((videoInputDevices) => {
-        const selectedDeviceId = videoInputDevices[0].deviceId
-        document.getElementById('scanButton').addEventListener('click', () => {
+        let currentDeviceIndex = 0
+
+        const scan = () => {
+            codeReader.reset()
             videoElement.style.display = 'block'
-            switchElement.style.display = 'block'
-            codeReader.decodeFromVideoDevice(selectedDeviceId, 'video', (result, err) => {
+            if (videoInputDevices.length > 1) {
+                switchElement.style.display = 'block'
+            }
+            codeReader.decodeFromVideoDevice(videoInputDevices[currentDeviceIndex].deviceId, 'video', (result, err) => {
                 if (result) {
                     document.getElementById('result').textContent = result.text
                     videoElement.style.display = 'none'
@@ -74,6 +78,18 @@ window.addEventListener('load', function () {
                     document.getElementById('result').textContent = err
                 }
             })
+        }
+
+        document.getElementById('scanButton').addEventListener('click', scan)
+
+        switchElement.addEventListener('click', () => {
+            console.log("current deviceIndex", currentDeviceIndex)
+            currentDeviceIndex += 1
+            if (currentDeviceIndex >= videoInputDevices.length) {
+                currentDeviceIndex = 0
+            }
+            console.log("current deviceIndex", currentDeviceIndex)
+            scan()
         })
     })
 })
